@@ -9,7 +9,7 @@ public class DocxSearch
 	public static void Main()
     {
 	// C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe -nologo -r:System.IO.Compression.dll -r:System.IO.Compression.FileSystem.dll docxSearch.cs
-	Console.WriteLine("Перетащите в консоль папку для поиска документов, либо введите адрес этой папки");
+	Console.WriteLine("Перетащите в консоль папку для поиска документов, либо введите путь к этой папке");
 	string dirPath = Console.ReadLine();
 	dirPath = dirPath.Trim('"');
 	string[] files = Directory.GetFiles(dirPath, "*", SearchOption.AllDirectories);
