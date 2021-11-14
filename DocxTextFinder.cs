@@ -21,20 +21,23 @@ public class DocxSearch
 				Console.WriteLine("Какое слово ищем?");
 				string strToFind = Console.ReadLine();
 				foreach (string file in files)
-				{
+				{	
+					//Если файл docx или xlsx - то это zip архивы и их открываем при помощи ZipArchive
+					//при этом исключаем docx и xlsx начинающиеся с ~$ т.к. эти файлы не архивы
 					if (!file.Contains("~$")&(file.Contains(".docx")|file.Contains(".xlsx"))) {
 					using (ZipArchive archive = ZipFile.OpenRead(file))
 						{
 						foreach (ZipArchiveEntry entry in archive.Entries)
 						{
-							if (entry.FullName.EndsWith("document.xml", StringComparison.OrdinalIgnoreCase)|entry.FullName.EndsWith("sharedStrings.xml", StringComparison.OrdinalIgnoreCase)){
+							//внутри архивов ищем xml файлы содержащие контент. core.xml добавлен для поиска автора документа
+							if (entry.FullName.EndsWith("document.xml", StringComparison.OrdinalIgnoreCase)|entry.FullName.EndsWith("sharedStrings.xml", StringComparison.OrdinalIgnoreCase) | entry.FullName.EndsWith("core.xml", StringComparison.OrdinalIgnoreCase)){
 								StreamReader doc = new StreamReader(entry.Open());
 								SerchInStream(file, strToFind, doc);
 							}
 						}
 					}
 					}
-					else {
+					else if (file.Contains(".txt")){
 						StreamReader doc = new StreamReader(file);
 						SerchInStream(file, strToFind, doc);
 					}
